@@ -24,8 +24,8 @@ scaler = MinMaxScaler()
 # Importación imagen
 # mri_image = nib.load('Dataset_Corrected/A00028185.nii').get_fdata()
 mri_image_no_corrected = nib.load('F:/Desktop/Universidad/Semestres/NovenoSemestre/Procesamiento_Imagenes/Proyecto/mri/NIFTI/I130146.nii.gz').get_fdata()
-mri_image = nib.load('F:/Desktop/Universidad/Semestres/NovenoSemestre/Procesamiento_Imagenes/Proyecto/mri/Corrected/I130146.nii.gz').get_fdata()
-mri_image = np.append(mri_image, np.zeros((192-mri_image.shape[0],256,256)), axis=0)
+mri_image = nib.load('F:/Desktop/Universidad/Semestres/NovenoSemestre/Procesamiento_Imagenes/3D-U-Net/Dataset_Corrected/A00060516.nii').get_fdata()
+# mri_image = np.append(mri_image, np.zeros((192-mri_image.shape[0],256,256)), axis=0)
 
 # Normalización 
 mri_image = (mri_image-np.min(mri_image))/(np.max(mri_image)-np.min(mri_image))
@@ -59,13 +59,15 @@ print(predicted_patches_reshaped.shape)
 #Repach individual patches into the orginal volume shape
 reconstructed_image = unpatchify(predicted_patches_reshaped, mri_image.shape)
 
+q = 80
+
 # Plot de las imágenes
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3)
 fig.suptitle('Máscara de cerebro obtenida')
 ax1.set_title('MRI Original')
-ax1.imshow(np.rot90(mri_image_no_corrected[100,:,:]),cmap='gray')
+ax1.imshow(mri_image[:,:,q],cmap='gray')
 ax2.set_title('MRI corregida')
-ax2.imshow(np.rot90(mri_image[100,:,:]),cmap='gray')
+ax2.imshow(mri_image[:,:,q],cmap='gray')
 ax3.set_title('Máscara cerebro')
-ax3.imshow(np.rot90(reconstructed_image[100,:,:]),cmap='gray')
+ax3.imshow(reconstructed_image[:,:,q],cmap='gray')
 
